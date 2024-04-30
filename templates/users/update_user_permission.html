@@ -1,0 +1,155 @@
+{% extends 'bases/admin_base.html' %}
+{% load static %}
+
+{% block title %} {% endblock title %}
+
+{% block meta_tags %}
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+    <meta name="keywords"
+          content="">
+{% endblock meta_tags %}
+{% block extra_style %}
+    <style>
+
+
+        .form-container {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .form-group, .permissions {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        select, .permissions {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        input[type="checkbox"] {
+            margin-left: 10px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+{% endblock extra_style %}
+{% block main_content %}
+
+    <!--begin::Post-->
+    <div class="post d-flex flex-column-fluid" id="kt_post">
+        <!--begin::Container-->
+        <div id="kt_content_container" class="container-xxl">
+
+            <!--begin::Tables Widget 11-->
+            <div class="card mb-5 mb-xl-8">
+                <!--begin::Header-->
+                <div class="card-header border-0 pt-5">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bolder fs-3 mb-1">Update User Permissions</span>
+                    </h3>
+                </div>
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body py-3">
+
+                        <!--begin::Table-->
+
+
+                        <form method="post" action="{% url 'update_user_permission' id=selected_user.id %}">
+                            {% csrf_token %}
+{#                        custom_table#}
+                             <table id=""
+                                      class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
+                                    <thead class="bg-dark">
+                                    <tr class="fw-bolder text-white">
+                                    <th class="ps-4 min-w-120px">Content Type</th>
+                                    <th>Permissions</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for content_type, permissions in permissions_grouped.items %}
+                                    <tr>
+                                        <td class="ps-4 min-w-120px">{{ content_type }}</td>
+
+                                        {% for perm in permissions %}
+                                            <td>
+                                                <div class="form-check form-check-custom form-check-solid">
+                                                    <input class="form-check-input check" type="checkbox"
+                                                           id="perm_{{ perm.id }}"
+                                                           name="permissions_id"
+                                                           value="{{ perm.id }}"
+                                                           {% if perm.id in user_permissions %}checked{% endif %}
+                                                    />
+                                                    <label class="form-check-label" for="perm_{{ perm.id }}">
+                                                        {{ perm.name }}
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        {% endfor %}
+
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <button type="submit" class="btn btn-primary" style="float: right;margin-top: 10px">Update
+                                Permissions
+                            </button>
+                        </form>
+                        {##}
+                        {#                                    </tbody>#}
+                        {#                                </table>#}
+                        <!--end::Table-->
+
+                </div>
+                <!--begin::Body-->
+            </div>
+            <!--end::Tables Widget 11-->
+
+
+        </div>
+        <!--end::Container-->
+    </div>
+
+
+{% endblock main_content %}
+
+{% block extra_script %}
+
+{% endblock extra_script %}		
